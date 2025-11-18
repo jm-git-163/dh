@@ -38,36 +38,57 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
 
-        /* 내비게이션 버튼 스타일 재정의 */
+        /* 내비게이션 및 버튼 스타일 재정의 */
         .nav-button {
-            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-            font-weight: 600; /* font-semibold */
-            padding: 0.5rem 0.75rem; /* py-2 px-3 */
-            border-radius: 0.5rem; /* rounded-lg */
+            white-space: nowrap; 
+            font-weight: 600; 
+            padding: 0.5rem 0.75rem; 
+            border-radius: 0.5rem; 
             transition-duration: 300ms;
             transition-property: all;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.875rem; /* text-sm */
+            font-size: 0.875rem; 
+            text-decoration: none; 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            /* 앵커 태그가 버튼처럼 보이도록 추가 스타일 */
+            border: none;
+            cursor: pointer;
+            /* 버튼과 버튼 사이의 여백을 확실히 보장하여 탭이 아닌 개별 버튼 느낌 강화 */
+            margin-right: 0.5rem; 
         }
         @media (min-width: 640px) {
             .nav-button {
-                font-size: 1rem; /* sm:text-base */
+                font-size: 1rem; 
+                margin-right: 0.75rem; 
             }
         }
         .nav-secondary {
-            background-color: #f3f4f6; /* bg-gray-100 */
-            color: #4b5563; /* text-gray-700 */
+            background-color: #f3f4f6; 
+            color: #4b5563; 
         }
         .nav-secondary:hover {
-            background-color: #e5e7eb; /* hover:bg-gray-200 */
+            background-color: #e5e7eb; 
         }
         .nav-primary {
-            background-color: #2563eb; /* bg-blue-600 */
-            color: #ffffff; /* text-white */
+            background-color: #2563eb; 
+            color: #ffffff; 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
         .nav-primary:hover {
-            background-color: #1d4ed8; /* hover:bg-blue-700 */
+            background-color: #1d4ed8; 
+        }
+
+        /* 메인 토픽 버튼을 위한 추가 스타일 */
+        .main-topic-button {
+            font-size: 1.125rem; /* text-xl */
+            padding: 1rem 2rem; /* px-8 py-3 보다 크게 조정 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* 더 강한 그림자 */
+            margin-top: 1rem;
+        }
+        .main-topic-button:hover {
+            transform: scale(1.03);
         }
     </style>
 </head>
@@ -79,17 +100,14 @@
             <h1 class="text-xl font-bold text-gray-900 hidden sm:block">분석 보고서</h1>
             <!-- 메뉴 항목들을 가로로 배열하고, 모바일에서 스크롤 가능하도록 설정 -->
             <div class="flex space-x-2 sm:space-x-3 overflow-x-auto pb-1">
-                <!-- 요약 대시보드 (개요 섹션으로 이동) -->
+                <!-- 내부 스크롤 메뉴 (버튼 형태 유지) -->
                 <button data-target="overview-section" class="nav-button nav-secondary">요약 대시보드</button>
-                <!-- 긍/부정 분석 (개요 섹션으로 이동) -->
-                <button data-target="overview-section" class="nav-button nav-secondary">긍/부정 분석</button>
-                <!-- 키워드 분석 (개요 섹션으로 이동) -->
-                <button data-target="overview-section" class="nav-button nav-secondary">키워드 분석</button>
-                <!-- 전체 데이터 (개요 섹션으로 이동) -->
-                <button data-target="overview-section" class="nav-button nav-secondary">전체 데이터</button>
+                <button data-target="analysis-section" class="nav-button nav-secondary">긍/부정 분석</button>
+                <button data-target="analysis-section" class="nav-button nav-secondary">키워드 분석</button>
+                <button data-target="analysis-section" class="nav-button nav-secondary">전체 데이터</button>
                 
-                <!-- 토픽 모델 보고서 (분석 섹션으로 이동) -->
-                <button data-target="analysis-section" class="nav-button nav-primary">토픽 모델 보고서</button>
+                <!-- 감성분석 보기 (index.html로 이동) -->
+                <a href="index.html" class="nav-button nav-primary">감성분석 보기</a>
             </div>
         </div>
     </nav>
@@ -97,18 +115,24 @@
     <main class="container mx-auto p-4 md:p-8 max-w-6xl pt-24 sm:pt-28"> 
         <header class="text-center mb-8 md:mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">나우 유 씨 미 3 (Now You See Me 3)</h1>
-            <p class="text-lg md:text-xl text-gray-600">초기 감상평 토픽 모델 분석 보고서</p>
+            <p class="text-lg md:text-xl text-gray-600 mb-6">초기 감상평 토픽 모델 분석 보고서</p>
+            
+            <!-- 사용자가 요청한 '감성분석 보기' 버튼 (index.html로 이동) -->
+            <a href="index.html" class="nav-button nav-primary main-topic-button">
+                감성분석 보기
+            </a>
         </header>
 
         <section id="overview-section" class="mb-8">
             <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">1. 개요 및 분석 방법론 (전체 데이터)</h2>
-                <p class="text-gray-700">본 보고서는 영화 '나우 유 씨 미 3'에 대한 초기 실관람객 15건의 감상평 데이터를 기반으로 잠재 디리클레 할당(LDA, Latent Dirichlet Allocation) 방식의 토픽 모델링을 적용하여 관람객들의 논의 주제를 구조화합니다. 분석 결과, 관람객들의 감상평은 명확하게 구별되는 **3가지 핵심 토픽**으로 수렴되었습니다. 상단의 **'토픽 모델 보고서'** 메뉴를 클릭하여 상세 분석과 마케팅 시사점을 확인해 보세요.</p>
+                <p class="text-gray-700">본 보고서는 영화 '나우 유 씨 미 3'에 대한 초기 실관람객 15건의 감상평 데이터를 기반으로 잠재 디리클레 할당(LDA, Latent Dirichlet Allocation) 방식의 토픽 모델링을 적용하여 관람객들의 논의 주제를 구조화합니다. 분석 결과, 관람객들의 감상평은 명확하게 구별되는 **3가지 핵심 토픽**으로 수렴되었습니다. 상단의 메뉴나 아래의 버튼을 클릭하여 상세 분석과 마케팅 시사점을 확인해 보세요.</p>
             </div>
         </section>
 
+        <!-- 내부 토픽 분석 섹션 -->
         <section id="analysis-section" class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">2. 추출된 핵심 토픽 요약 (토픽 모델 보고서)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">2. 추출된 핵심 토픽 요약</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 <div id="card-topic1" class="topic-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent" data-topic="topic1" role="button" tabindex="0">
@@ -189,8 +213,8 @@
             const cards = document.querySelectorAll('.topic-card');
             const detailsContent = document.getElementById('topic-details-content');
             
-            // 모든 내비게이션 버튼을 선택
-            const navButtons = document.querySelectorAll('.nav-button');
+            // data-target 속성이 있는, 내부 스크롤을 위한 버튼들만 선택
+            const scrollButtons = document.querySelectorAll('button[data-target]'); 
 
             function showTopicDetails(topicId) {
                 const data = topicData[topicId];
@@ -233,17 +257,20 @@
             cards.forEach(card => {
                 card.addEventListener('click', () => {
                     showTopicDetails(card.dataset.topic);
+                    // 토픽 카드를 클릭하면 상세 분석 섹션으로 스크롤 (topic.html 이동과는 별개)
+                    smoothScrollTo('topic-details-container'); 
                 });
                 card.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         showTopicDetails(card.dataset.topic);
+                        smoothScrollTo('topic-details-container');
                     }
                 });
             });
 
-            // 모든 내비게이션 버튼에 클릭 이벤트 리스너 연결
-            navButtons.forEach(button => {
+            // 내부 스크롤 버튼에만 클릭 이벤트 리스너 연결
+            scrollButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
                     const targetId = e.currentTarget.dataset.target;
                     smoothScrollTo(targetId);
