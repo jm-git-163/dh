@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나우 유 씨 미 3 | 토픽 모델 분석 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 커스텀 Tailwind CSS 스타일 정의 */
+        .topic-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .topic-card.active {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.12);
+        }
+        .keyword-tag {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .detail-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fixed-nav {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+
+        /* 내비게이션 버튼 스타일 재정의 */
+        .nav-button {
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            font-weight: 600; /* font-semibold */
+            padding: 0.5rem 0.75rem; /* py-2 px-3 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition-duration: 300ms;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem; /* text-sm */
+        }
+        @media (min-width: 640px) {
+            .nav-button {
+                font-size: 1rem; /* sm:text-base */
+            }
+        }
+        .nav-secondary {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            color: #4b5563; /* text-gray-700 */
+        }
+        .nav-secondary:hover {
+            background-color: #e5e7eb; /* hover:bg-gray-200 */
+        }
+        .nav-primary {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .nav-primary:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans leading-relaxed">
+
+    <!-- 상단 고정 내비게이션 바: 사용자 요청 메뉴 구조 반영 -->
+    <nav class="fixed-nav w-full bg-white border-b border-gray-200 z-10">
+        <div class="container mx-auto p-3 max-w-6xl flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-900 hidden sm:block">분석 보고서</h1>
+            <!-- 메뉴 항목들을 가로로 배열하고, 모바일에서 스크롤 가능하도록 설정 -->
+            <div class="flex space-x-2 sm:space-x-3 overflow-x-auto pb-1">
+                <!-- 요약 대시보드 (개요 섹션으로 이동) -->
+                <button data-target="overview-section" class="nav-button nav-secondary">요약 대시보드</button>
+                <!-- 긍/부정 분석 (개요 섹션으로 이동) -->
+                <button data-target="overview-section" class="nav-button nav-secondary">긍/부정 분석</button>
+                <!-- 키워드 분석 (개요 섹션으로 이동) -->
+                <button data-target="overview-section" class="nav-button nav-secondary">키워드 분석</button>
+                <!-- 전체 데이터 (개요 섹션으로 이동) -->
+                <button data-target="overview-section" class="nav-button nav-secondary">전체 데이터</button>
+                
+                <!-- 토픽 모델 보고서 (분석 섹션으로 이동) -->
+                <button data-target="analysis-section" class="nav-button nav-primary">토픽 모델 보고서</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8 max-w-6xl pt-24 sm:pt-28"> 
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">나우 유 씨 미 3 (Now You See Me 3)</h1>
+            <p class="text-lg md:text-xl text-gray-600">초기 감상평 토픽 모델 분석 보고서</p>
+        </header>
+
+        <section id="overview-section" class="mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">1. 개요 및 분석 방법론 (전체 데이터)</h2>
+                <p class="text-gray-700">본 보고서는 영화 '나우 유 씨 미 3'에 대한 초기 실관람객 15건의 감상평 데이터를 기반으로 잠재 디리클레 할당(LDA, Latent Dirichlet Allocation) 방식의 토픽 모델링을 적용하여 관람객들의 논의 주제를 구조화합니다. 분석 결과, 관람객들의 감상평은 명확하게 구별되는 **3가지 핵심 토픽**으로 수렴되었습니다. 상단의 **'토픽 모델 보고서'** 메뉴를 클릭하여 상세 분석과 마케팅 시사점을 확인해 보세요.</p>
+            </div>
+        </section>
+
+        <section id="analysis-section" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">2. 추출된 핵심 토픽 요약 (토픽 모델 보고서)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div id="card-topic1" class="topic-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent" data-topic="topic1" role="button" tabindex="0">
+                    <h3 class="text-xl font-bold text-blue-700 mb-4">토픽 1: 시리즈 연속성과 팬덤 만족</h3>
+                    <p class="text-gray-600 mb-5">
+                        '호스맨' 복귀, '전작'과의 연결성, '역시'라는 기대를 충족하며 시리즈 팬들의 높은 충성도와 만족감을 반영하는 토픽입니다.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="keyword-tag">#호스맨</span>
+                        <span class="keyword-tag">#시리즈</span>
+                        <span class="keyword-tag">#전작</span>
+                        <span class="keyword-tag">#3편</span>
+                        <span class="keyword-tag">#기다렸다</span>
+                        <span class="keyword-tag">#역시</span>
+                    </div>
+                </div>
+                
+                <div id="card-topic2" class="topic-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent" data-topic="topic2" role="button" tabindex="0">
+                    <h3 class="text-xl font-bold text-green-700 mb-4">토픽 2: 핵심 엔터테인먼트 경험</h3>
+                    <p class="text-gray-600 mb-5">
+                        영화의 근본적인 재미, 몰입도, 팝콘 무비로서의 기능에 초점을 맞춘 토픽입니다. 시간을 잊을 만큼의 오락적 가치를 중시합니다.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="keyword-tag">#재밌다</span>
+                        <span class="keyword-tag">#존잼</span>
+                        <span class="keyword-tag">#개재밌음</span>
+                        <span class="keyword-tag">#시간가는줄몰랐음</span>
+                        <span class="keyword-tag">#팝콘무비</span>
+                    </div>
+                </div>
+                
+                <div id="card-topic3" class="topic-card bg-white p-6 rounded-lg shadow-md border-2 border-transparent" data-topic="topic3" role="button" tabindex="0">
+                    <h3 class="text-xl font-bold text-purple-700 mb-4">토픽 3: 극장 관람 및 시각적 스케일</h3>
+                    <p class="text-gray-600 mb-5">
+                        영화관 환경에서 최적화된 시각적 만족감을 표현하며, 영화의 웅장한 볼거리와 마술 연출의 성공을 나타냅니다.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="keyword-tag">#눈뽕</span>
+                        <span class="keyword-tag">#영화관</span>
+                        <span class="keyword-tag">#볼만합니다</span>
+                        <span class="keyword-tag">#극장</span>
+                        <span class="keyword-tag">#기대</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="topic-details-container" class="mt-10 md:mt-12">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">3. 토픽별 심층 분석 및 마케팅 시사점</h2>
+            <div id="topic-details-content" class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200 min-h-[200px]">
+                <p class="text-gray-500 text-center text-lg pt-10">위의 3가지 핵심 토픽 중 하나를 선택하여 상세 내용을 확인하세요.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const topicData = {
+                topic1: {
+                    title: "토픽 1: 시리즈 연속성과 팬덤 만족",
+                    analysis: "이 토픽은 관람객들이 영화를 개별 작품이 아닌, **시리즈의 연장선상**에서 평가하고 있음을 명확히 보여줍니다. 이 토픽의 높은 비중은 '나우 유 씨 미 3'의 주요 흥행 동력이 신규 관객 유입보다는 **기존 팬덤의 충성도**에 있음을 시사합니다. \"호스맨 기다렸다고\"와 같은 감상평은 이 토픽의 감성적 기반을 잘 보여줍니다. 팬들은 단순한 영화 관람을 넘어, 익숙하고 사랑하는 캐릭터들의 복귀 자체에 큰 만족감을 느끼고 있습니다.",
+                    strategy: "호스맨 캐릭터 포스터 및 시리즈 복습 영상 등을 활용하여 **향수와 충성심**을 자극하는 마케팅을 강화해야 합니다."
+                },
+                topic2: {
+                    title: "토픽 2: 핵심 엔터테인먼트 경험",
+                    analysis: "가장 많은 키워드 빈도를 차지하는 '재미/만족' 그룹을 포괄하는 토픽입니다. 영화의 가장 중요한 성공 요인인 **오락적 가치**를 확인해줍니다. 관람객들은 영화를 복잡한 메시지나 심오한 주제 없이, 순수하게 즐기고 몰입할 수 있는 '팝콘 무비'로 높이 평가합니다. 이는 영화가 스트레스 해소와 재미 추구라는 대중의 기대에 부합했음을 의미합니다.",
+                    strategy: "주요 캐치프레이즈를 '시간 순삭', '스트레스 해소 팝콘 무비 종결자' 등으로 설정하여 영화의 **경쾌하고 확실한 재미**를 부각합니다."
+                },
+                topic3: {
+                    title: "토픽 3: 극장 관람 및 시각적 스케일",
+                    analysis: "이 토픽은 영화의 마케팅 방향을 설정하는 데 중요한 시사점을 제공합니다. 마술과 환상을 소재로 하는 영화 특성상, **대형 스크린에서 느끼는 시각적 효과**가 관람 만족도에 결정적인 영향을 미치고 있습니다. \"눈뽕 제대로\"나 \"꼭 영화관에서 보는거 추천\"이라는 의견은 이 영화가 VOD보다는 **극장 환경에 최적화된 콘텐츠**로 인식되고 있음을 보여주며, 극장 관람의 당위성을 부여합니다.",
+                    strategy: "**'마법 같은 비주얼'**을 핵심으로 하는 예고편을 배포하고, 프리미엄 포맷(IMAX, 4DX 등) 관람을 적극적으로 권유하여 **극장의 이점**을 활용해야 합니다."
+                }
+            };
+
+            const cards = document.querySelectorAll('.topic-card');
+            const detailsContent = document.getElementById('topic-details-content');
+            
+            // 모든 내비게이션 버튼을 선택
+            const navButtons = document.querySelectorAll('.nav-button');
+
+            function showTopicDetails(topicId) {
+                const data = topicData[topicId];
+                
+                cards.forEach(card => card.classList.remove('active'));
+                document.getElementById(`card-${topicId}`).classList.add('active');
+
+                detailsContent.innerHTML = `
+                    <div class="detail-card">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">${data.title}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">심층 분석</h4>
+                                <p class="text-gray-700 leading-relaxed">${data.analysis}</p>
+                            </div>
+                            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                                <h4 class="text-lg font-semibold text-blue-800 mb-3">마케팅 활용 전략</h4>
+                                <p class="text-blue-900 leading-relaxed">${data.strategy}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function smoothScrollTo(targetId) {
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    // 고정된 헤더 높이와 패딩을 고려하여 오프셋 설정
+                    const headerOffset = 100; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    showTopicDetails(card.dataset.topic);
+                });
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showTopicDetails(card.dataset.topic);
+                    }
+                });
+            });
+
+            // 모든 내비게이션 버튼에 클릭 이벤트 리스너 연결
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetId = e.currentTarget.dataset.target;
+                    smoothScrollTo(targetId);
+                });
+            });
+
+            // 페이지 로드 시 기본 토픽 표시
+            showTopicDetails('topic1');
+        });
+    </script>
+</body>
+</html>
