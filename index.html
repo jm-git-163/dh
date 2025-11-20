@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DH 이해하기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        /* 모달 애니메이션 */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- 헤더 영역 -->
+    <header class="w-full bg-white border-b border-slate-200 py-12 px-4 text-center shadow-sm">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">DH 이해하기</h1>
+            <p class="text-lg text-slate-500">디지털 기술과 인문학적 상상력의 만남</p>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="flex-grow flex items-center justify-center p-6 md:p-12">
+        <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- 카드 1: 디지털 인문학 (모달 트리거) -->
+            <div onclick="openModal()" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-md cursor-pointer card-hover group relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-blue-500"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="p-3 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
+                        <!-- Icon: Library/Classic -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Core</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-3 text-slate-800">디지털 인문학</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    인문학적 질문을 디지털 도구로 해결하는 융합 학문입니다. 정의, 역사, 그리고 연구 방법을 알아봅니다.
+                </p>
+                <div class="mt-6 flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                    자세히 보기 &rarr;
+                </div>
+            </div>
+
+            <!-- 카드 2: AI 작동원리 -->
+            <a href="#ai-principles" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-md cursor-pointer card-hover group relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-indigo-500"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="p-3 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
+                        <!-- Icon: CPU/Brain -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-3 text-slate-800">AI 작동원리</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    데이터 수집부터 학습, 추론까지. 인공지능이 생각하고 결과를 도출하는 기술적 메커니즘을 탐구합니다.
+                </p>
+            </a>
+
+            <!-- 카드 3: AI로 보는 텍스트 -->
+            <a href="#ai-text" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-md cursor-pointer card-hover group relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="p-3 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors">
+                        <!-- Icon: Document Search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-3 text-slate-800">AI로 보는 텍스트</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    자연어 처리(NLP)와 텍스트 마이닝. AI는 인간의 언어를 어떻게 읽고, 분석하고, 시각화할까요?
+                </p>
+            </a>
+
+            <!-- 카드 4: AI와 윤리 -->
+            <a href="#ai-ethics" class="bg-white rounded-2xl p-8 border border-slate-100 shadow-md cursor-pointer card-hover group relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-rose-500"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="p-3 bg-rose-50 rounded-lg group-hover:bg-rose-100 transition-colors">
+                        <!-- Icon: Scale/Shield -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-3 text-slate-800">AI와 윤리</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    편향성, 저작권, 그리고 인간성. 기술 발전 속에서 우리가 반드시 고민해야 할 윤리적 쟁점들입니다.
+                </p>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="py-8 text-center text-slate-400 text-sm">
+        &copy; 2024 DH Understanding Project. All rights reserved.
+    </footer>
+
+    <!-- 모달 (팝업) -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden transition-opacity" onclick="closeModal()"></div>
+    <div id="modal-panel" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden pointer-events-none">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg pointer-events-auto transform transition-all" onclick="event.stopPropagation()">
+            <!-- 모달 헤더 -->
+            <div class="flex justify-between items-center p-6 border-b border-slate-100">
+                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="text-blue-600">🏛️</span> 디지털 인문학 탐구
+                </h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 모달 내용: 공유해주신 링크의 내용을 목차화하여 배치 -->
+            <div class="p-6 space-y-3">
+                <p class="text-slate-500 mb-4 text-sm">아래 주제를 선택하여 상세 내용을 확인하세요.</p>
+                
+                <a href="https://g.co/gemini/share/c5f933df0d25" target="_blank" class="block p-4 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 transition-all group">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-800 group-hover:text-blue-700">1. 디지털 인문학이란?</h4>
+                            <p class="text-xs text-slate-500 mt-1">정의와 핵심 가치 알아보기</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 group-hover:text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="#" class="block p-4 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 transition-all group">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-800 group-hover:text-blue-700">2. 주요 연구 방법론</h4>
+                            <p class="text-xs text-slate-500 mt-1">데이터 시각화, 네트워크 분석 등</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 group-hover:text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="#" class="block p-4 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 transition-all group">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-800 group-hover:text-blue-700">3. 국내외 DH 사례</h4>
+                            <p class="text-xs text-slate-500 mt-1">실제 프로젝트와 아카이브</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 group-hover:text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 모달 하단 버튼 -->
+            <div class="p-4 bg-slate-50 rounded-b-2xl flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-100 transition-colors font-medium text-sm">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalPanel = document.getElementById('modal-panel');
+        const modalContent = modalPanel.querySelector('div');
+
+        function openModal() {
+            // 모달 표시
+            modalBackdrop.classList.remove('hidden');
+            modalPanel.classList.remove('hidden');
+            
+            // 애니메이션 시작 (약간의 지연 후 클래스 추가)
+            setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.add('modal-enter-active');
+                modalContent.classList.remove('modal-enter');
+            }, 10);
+            
+            // 초기 상태 설정
+            modalContent.classList.add('modal-enter');
+        }
+
+        function closeModal() {
+            // 애니메이션 종료
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.add('modal-exit-active');
+            
+            setTimeout(() => {
+                modalBackdrop.classList.add('hidden');
+                modalPanel.classList.add('hidden');
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.remove('modal-exit-active', 'modal-enter', 'modal-enter-active');
+            }, 200); // 애니메이션 시간과 일치
+        }
+
+        // ESC 키로 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
